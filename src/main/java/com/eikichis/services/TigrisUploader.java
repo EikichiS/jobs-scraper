@@ -6,13 +6,11 @@ import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
 public class TigrisUploader {
 
-    private static final String BUCKET = "jobs"; // tu bucket en Tigris
-
     public static void upload(String key, byte[] data) {
         S3Client s3 = TigrisClientFactory.create();
 
         PutObjectRequest req = PutObjectRequest.builder()
-                .bucket(BUCKET)
+                .bucket(System.getenv("BUCKET_NAME"))
                 .key(key)
                 .contentType("application/json")
                 .build();
@@ -22,3 +20,4 @@ public class TigrisUploader {
         System.out.println("Uploaded to Tigris: " + key);
     }
 }
+
