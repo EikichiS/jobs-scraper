@@ -38,7 +38,7 @@
                     </descriptorRefs>
                     <archive>
                         <manifest>
-                            <mainClass>com.simon.scraper.ScraperMain</mainClass>
+                            <mainClass>com.eikichis.scraper.Main</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
