@@ -10,7 +10,7 @@ import java.net.URI;
 public class TigrisClientFactory {
     public static S3Client create() {
         return S3Client.builder()
-                .region(Region.US_EAST_1) // Dummy region, Tigris lo ignora
+                .region(Region.of(System.getenv("AWS_REGION")))
                 .endpointOverride(URI.create(System.getenv("TIGRIS_ENDPOINT")))
                 .credentialsProvider(
                         StaticCredentialsProvider.create(
@@ -24,3 +24,4 @@ public class TigrisClientFactory {
                 .build();
     }
 }
+
