@@ -38,7 +38,7 @@
                     </descriptorRefs>
                     <archive>
                         <manifest>
-                            <mainClass>com.eikichis.scraper.Main</mainClass>
+                            <mainClass>com.eikichis.Main</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -63,3 +63,4 @@
     </build>
 
 </project>
+
