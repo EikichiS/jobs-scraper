@@ -1,0 +1,9 @@
+app = "jobs-scraper"
+
+[build]
+  dockerfile = "Dockerfile"
+
+[[vm]]
+  size = "shared-cpu-1x"
+  memory_mb = 256
+  schedule = "0 6 * * *"  # todos los días a las 6am
