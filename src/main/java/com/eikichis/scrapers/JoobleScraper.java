@@ -1,12 +1,13 @@
 package com.eikichis.scrapers;
 
 import com.eikichis.model.JobOffer;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class JoobleScraper implements JobScraper {
 
