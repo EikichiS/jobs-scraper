@@ -1,9 +1,21 @@
 app = "jobs-scraper"
 
 [build]
-  dockerfile = "Dockerfile"
+dockerfile = "Dockerfile"
 
-[[vm]]
-  size = "shared-cpu-1x"
-  memory_mb = 256
-  schedule = "0 6 * * *"  # todos los días a las 6am
+[processes]
+scraper = "java -jar /app/app.jar"
+
+# La máquina se prende sola cuando Fly.io la necesita
+[machines.autostart]
+processes = ["scraper"]
+
+# La máquina se apaga cuando termina
+[machines.autostop]
+processes = ["scraper"]
+
+# CRON JOB REAL
+
+[[machine]]
+cron = "0 */3 * * *"
+process = "scraper"

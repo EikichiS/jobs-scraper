@@ -2,7 +2,9 @@ package com.eikichis;
 
 import com.eikichis.model.JobOffer;
 import com.eikichis.services.GetOnBoardScraper;
+import com.eikichis.services.LaborumScraper;
 import com.eikichis.services.TigrisUploader;
+import com.eikichis.services.TrabajandoScraper;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -20,8 +22,13 @@ public class Main {
 
         // Aquí haces todos tus scrapeos
         List<JobOffer> getOnboard = GetOnBoardScraper.scrape();
+        List<JobOffer> laborum = LaborumScraper.scrape();
+        List<JobOffer> trabajando = TrabajandoScraper.scrape();
 
-        List<JobOffer> all = new ArrayList<>(getOnboard);
+        List<JobOffer> all = new ArrayList<>();
+        all.addAll(getOnboard);
+        all.addAll(laborum);
+        all.addAll(trabajando);
 
         Map<String, Object> payload = Map.of(
                 "scrapedAt", Instant.now().toString(),
