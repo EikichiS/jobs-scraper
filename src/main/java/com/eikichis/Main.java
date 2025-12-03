@@ -1,11 +1,11 @@
 package com.eikichis;
 
 import com.eikichis.model.JobOffer;
-import com.eikichis.services.GetOnBoardScraper;
+import com.eikichis.scrapers.GetOnBoardScraper;
 import com.eikichis.services.LaborumScraper;
 import com.eikichis.services.TigrisUploader;
-import com.eikichis.services.TrabajandoScraper;
-import com.fasterxml.jackson.core.JsonProcessingException;
+import com.eikichis.scrapers.TrabajandoScraper;
+import com.eikichis.services.UnifiedScraper;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.time.Instant;
@@ -18,21 +18,10 @@ import java.util.Map;
 public class Main {
     public static void main(String[] args) throws Exception {
 
-        System.out.println("Starting daily scraper...");
 
-        // Aquí haces todos tus scrapeos
-        List<JobOffer> getOnboard = GetOnBoardScraper.scrape();
-        List<JobOffer> laborum = LaborumScraper.scrape();
-        List<JobOffer> trabajando = new ArrayList<>();
-        try {
-            trabajando = TrabajandoScraper.scrape();
-        } catch (Exception e) {
-            System.out.println("❌ ERROR en TrabajandoScraper: " + e.getMessage());
-        }
-        List<JobOffer> all = new ArrayList<>();
-        all.addAll(getOnboard);
-        all.addAll(laborum);
-        all.addAll(trabajando);
+        System.out.println("Starting mega scraper...");
+
+        List<JobOffer> all = UnifiedScraper.scrapeAll();
 
         Map<String, Object> payload = Map.of(
                 "scrapedAt", Instant.now().toString(),
@@ -44,6 +33,6 @@ public class Main {
 
         TigrisUploader.upload("latest.json", json);
 
-        System.out.println("Scraper finished OK.");
+        System.out.println("Scraper finished OK. Total: " + all.size());
         }
 }
