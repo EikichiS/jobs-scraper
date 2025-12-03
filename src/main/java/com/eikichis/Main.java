@@ -1,15 +1,11 @@
 package com.eikichis;
 
 import com.eikichis.model.JobOffer;
-import com.eikichis.scrapers.GetOnBoardScraper;
-import com.eikichis.services.LaborumScraper;
 import com.eikichis.services.TigrisUploader;
-import com.eikichis.scrapers.TrabajandoScraper;
 import com.eikichis.services.UnifiedScraper;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
