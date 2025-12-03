@@ -16,23 +16,23 @@ public class CompuTrabajoScraper implements JobScraper {
 
         Document doc = Jsoup.connect(url)
                 .userAgent("Mozilla/5.0")
-                .timeout(20000)
+                .timeout(15000)
                 .get();
 
-        Elements jobs = doc.select(".bRS.bClick");
+        Elements jobs = doc.select(".bJS");
+
         List<JobOffer> list = new ArrayList<>();
 
-        for (Element job : jobs) {
-            String title = job.select(".js-o-link.fc_base").text();
-            String company = job.select(".it-emp-name").text();
-            String location = job.select(".fc_base.mt5").text();
-            String link = "https://cl.computrabajo.com" +
-                    job.select("a").attr("href");
+        for (Element j : jobs) {
+            String title = j.select("a.js-o-link.fc_base").text();
+            String company = j.select(".fc_aux").text();
+            String location = j.select(".fc_aux.t_small").text();
+            String link = j.select("a").attr("href");
 
-            list.add(new JobOffer(
-                    title, company, location, link,
-                    "Computrabajo"
-            ));
+            if (!link.startsWith("http"))
+                link = "https://cl.computrabajo.com" + link;
+
+            list.add(new JobOffer(title, company, location, link, "CompuTrabajo"));
         }
 
         return list;

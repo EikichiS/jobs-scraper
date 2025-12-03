@@ -12,34 +12,26 @@ public class JoobleScraper implements JobScraper {
 
     @Override
     public List<JobOffer> scrape() throws Exception {
-        String url = "https://cl.jooble.org/api/?keywords=java&page=1";
+        String url = "https://cl.jooble.org/SearchResult?rgns=Chile&ukw=java";
 
-        String json = Jsoup.connect(url)
-                .ignoreContentType(true)
+        Document doc = Jsoup.connect(url)
                 .userAgent("Mozilla/5.0")
-                .timeout(20000)
-                .get()
-                .body()
-                .text();
+                .timeout(15000)
+                .get();
 
-        ObjectMapper mapper = new ObjectMapper();
-        Map<String, Object> resp = mapper.readValue(json, Map.class);
+        Elements cards = doc.select(".result-item");
 
-        List<Map<String, Object>> data = (List<Map<String, Object>>) resp.get("jobs");
         List<JobOffer> list = new ArrayList<>();
 
-        for (Map<String, Object> job : data) {
-            list.add(new JobOffer(
-                    safe(job.get("title")),
-                    safe(job.get("company")),
-                    safe(job.get("location")),
-                    safe(job.get("link")),
-                    "Jooble"
-            ));
+        for (Element c : cards) {
+            String title = c.select(".result-item__title").text();
+            String company = c.select(".result-item__subtitle").text();
+            String location = c.select(".result-item__location").text();
+            String link = c.select("a.result-item__title").attr("href");
+
+            list.add(new JobOffer(title, company, location, link, "Jooble"));
         }
 
         return list;
     }
-
-    private String safe(Object o) { return o == null ? "" : o.toString(); }
 }

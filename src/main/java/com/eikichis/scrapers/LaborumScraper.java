@@ -14,26 +14,28 @@ public class LaborumScraper implements JobScraper {
 
     @Override
     public List<JobOffer> scrape() throws Exception {
-        String url = "https://www.laborum.cl/empleos.html?keyword=java";
+
+        String url = "https://www.laborum.cl/empleos-java.html";
 
         Document doc = Jsoup.connect(url)
                 .userAgent("Mozilla/5.0")
-                .timeout(20000)
+                .timeout(15000)
                 .get();
 
-        Elements jobs = doc.select(".sc-lhyNDq");
+        Elements cards = doc.select("article");
+
         List<JobOffer> list = new ArrayList<>();
 
-        for (Element job : jobs) {
-            String title = job.select("h2").text();
-            String company = job.select("h3").first() != null ? job.select("h3").first().text() : "";
-            String location = job.select("h3.sc-jtEBsj").text();
-            String link = job.select("a").attr("href");
+        for (Element c : cards) {
+            String title = c.select("h2").text();
+            String company = c.select("h3").text();
+            String location = c.select(".sc-jtEBsj").text();
+            String link = c.select("a[href]").attr("href");
 
-            list.add(new JobOffer(
-                    title, company, location, link,
-                    "Laborum"
-            ));
+            if (!link.startsWith("http"))
+                link = "https://www.laborum.cl" + link;
+
+            list.add(new JobOffer(title, company, location, link, "Laborum"));
         }
 
         return list;

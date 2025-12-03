@@ -19,25 +19,26 @@ public class ChileTrabajosScraper implements JobScraper {
                 .timeout(15000)
                 .get();
 
-        Elements jobs = doc.select(".job-item");
-        List<JobOffer> list = new ArrayList<>();
+        Elements cards = doc.select(".job-item");
 
-        for (Element job : jobs) {
-            String title = job.select("h2.title a").text();
-            String company = job.select("h3.meta").first() != null
-                    ? job.select("h3.meta").first().text().split(",")[0]
-                    : "";
-            String location = job.select("h3.meta a").text();
-            String link = "https://www.chiletrabajos.cl" +
-                    job.select("h2.title a").attr("href");
+        List<JobOffer> offers = new ArrayList<>();
 
-            list.add(new JobOffer(
-                    title, company, location, link,
-                    "ChileTrabajos"
-            ));
+        for (Element offer : cards) {
+            String title = offer.select("h2.title a").text();
+            String company = offer.select("h3.meta").first() != null
+                    ? offer.select("h3.meta").first().text().split(",")[0].trim()
+                    : "Sin empresa";
+
+            String location = offer.select("h3.meta a").text();
+            String link = offer.select("h2.title a").attr("href");
+
+            if (!link.startsWith("http")) {
+                link = "https://www.chiletrabajos.cl" + link;
+            }
+
+            offers.add(new JobOffer(title, company, location, link, "ChileTrabajos"));
         }
 
-        return list;
+        return offers;
     }
 }
-

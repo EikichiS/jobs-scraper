@@ -13,31 +13,30 @@ public class TrabajandoScraper implements JobScraper {
 
     @Override
     public List<JobOffer> scrape() throws Exception {
+
         String url = "https://www.trabajando.cl/trabajo-empleo/";
 
         Document doc = Jsoup.connect(url)
                 .userAgent("Mozilla/5.0")
-                .header("Accept-Language", "es-CL,es;q=0.8")
-                .header("Accept", "text/html")
-                .followRedirects(true)
                 .timeout(15000)
                 .get();
 
-        Elements jobs = doc.select(".result-box-container");
-        List<JobOffer> list = new ArrayList<>();
+        Elements boxes = doc.select(".result-box-container");
 
-        for (Element job : jobs) {
-            String title = job.select("h2").text();
-            String company = job.select(".type").text();
-            String location = job.select(".location").text();
-            String link = job.select("a").attr("href");
+        List<JobOffer> offers = new ArrayList<>();
 
-            list.add(new JobOffer(
-                    title, company, location, link,
-                    "Trabajando"
-            ));
+        for (Element box : boxes) {
+            String title = box.select("h2").text();
+            String company = box.select(".type").text();
+            String location = box.select(".location").text();
+            String link = box.select("a[href]").attr("href");
+
+            if (!link.startsWith("http"))
+                link = "https://www.trabajando.cl" + link;
+
+            offers.add(new JobOffer(title, company, location, link, "Trabajando"));
         }
 
-        return list;
+        return offers;
     }
 }
