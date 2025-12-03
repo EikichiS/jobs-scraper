@@ -23,8 +23,12 @@ public class Main {
         // Aquí haces todos tus scrapeos
         List<JobOffer> getOnboard = GetOnBoardScraper.scrape();
         List<JobOffer> laborum = LaborumScraper.scrape();
-        List<JobOffer> trabajando = TrabajandoScraper.scrape();
-
+        List<JobOffer> trabajando = new ArrayList<>();
+        try {
+            trabajando = TrabajandoScraper.scrape();
+        } catch (Exception e) {
+            System.out.println("❌ ERROR en TrabajandoScraper: " + e.getMessage());
+        }
         List<JobOffer> all = new ArrayList<>();
         all.addAll(getOnboard);
         all.addAll(laborum);

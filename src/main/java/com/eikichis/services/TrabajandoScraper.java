@@ -10,7 +10,7 @@ import java.util.List;
 
 public class TrabajandoScraper {
     public static List<JobOffer> scrape() throws Exception {
-        String url = "https://www.trabajando.cl/trabajos-busqueda-java.html";
+        String url = "https://www.trabajando.cl/trabajo-empleo/java?ubicacion=metropolitana+de+santiago&region=1";
 
         Document doc = Jsoup.connect(url)
                 .userAgent("Mozilla/5.0")
